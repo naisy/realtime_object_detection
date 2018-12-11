@@ -55,7 +55,7 @@ class WebcamVideoStream:
             self.vid.release()
             raise IOError(("Couldn't open video frame."))
         if self.isGSTREAMER:
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_YUV2RGB_I420)
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
         # initialize the variable used to indicate if the thread should
         # check camera vid shape
@@ -112,7 +112,7 @@ class WebcamVideoStream:
                     # otherwise, read the next frame from the stream
                     self.ret, frame = self.vid.read()
                     if self.ret:
-                        self.frame = cv2.cvtColor(frame, cv2.COLOR_YUV2RGB_I420)
+                        self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             else:
                 # keep looping infinitely until the stream is closed
                 while self.running:
