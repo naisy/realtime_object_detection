@@ -31,6 +31,28 @@ class WebcamVideoStream:
             os.makedirs(path)
         return
 
+    def get_fps_est(self):
+        # Number of frames to capture
+        num_frames = 120;
+
+        # Start time
+        start = time.time()
+         
+        # Grab x num_frames
+        for i in range(0, num_frames) :
+            ret, frame = self.vid.read()
+
+        # End time
+        end = time.time()
+
+        # Time elapsed
+        seconds = end - start
+
+        # Calculate frames per second
+        fps  = num_frames / seconds;
+
+        return fps
+
     def start(self, src, width, height, output_image_dir='output_image', output_movie_dir='output_movie', output_prefix='output', save_to_file=False):
         """
         output_1532580366.27.avi
@@ -71,25 +93,7 @@ class WebcamVideoStream:
 
             # Estimate the fps if not set
             if(fps == 0):
-                # Number of frames to capture
-                num_frames = 120;
-             
-                # Start time
-                start = time.time()
-                 
-                # Grab a few frames
-                for i in range(0, num_frames) :
-                    ret, frame = self.vid.read()
-             
-                # End time
-                end = time.time()
-             
-                # Time elapsed
-                seconds = end - start
-             
-                # Calculate frames per second
-                fps  = num_frames / seconds;
-
+                fps = self.get_fps_est()
                 print("Estimated frames per second : {0}".format(fps))
 
             fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
