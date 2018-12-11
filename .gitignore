@@ -1,4 +1,6 @@
 config.yml
 __pycache__/
+lib/__pycache__/we
+tf_utils/protos/__pycache__
 *.py[cod]
 *$py.class
