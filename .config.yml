@@ -3,10 +3,13 @@ image_input: 'images'       # input image dir
 movie_input: 'input.mp4'    # mp4 or avi. Movie file.
 #camera_input: 0            # USB Webcam on PC
 camera_input: 1             # USB Webcam on TX2
-### Onboard camera on Xavier (with TX2 onboard camera)
+## Input Must be OpenCV readable
+## Onboard camera on Xavier (with TX2 onboard camera)
 #camera_input: "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=1280, height=720,format=NV12, framerate=120/1 ! nvvidconv ! video/x-raw,format=I420 ! videoflip method=rotate-180 ! appsink"
-### Onboard camera on TX2 ### (need: apt-get install libxine2)
+## Onboard camera on TX2 ### (need: apt-get install libxine2)
 #camera_input: "nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)I420, framerate=(fraction)30/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink"
+## Onboard or external RTSP feed
+#camera_input: "rtspsrc location=rtsp://127.0.0.1:8554/test latency=500 ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw, width=(int)1280, height=(int)720, format=(string)BGRx ! videoconvert ! appsink"
 
 force_gpu_compatible: False # If True with visualize False, speed up. Forces all CPU tensors to be allocated with Cuda pinned memory.
 save_to_file: False         # movie or camera: ./output_movie/output_unixtime.avi. Save it in avi format to prevent compression degradation. Requires a lot of disk space.
