@@ -45,7 +45,7 @@ class WebcamVideoStream:
         if not self.vid.isOpened():
             # camera failed
             raise IOError(("Couldn't open video file or webcam."))
-        if isinstance(src, str) and src.startswith("nvarguscamerasrc"):
+        if isinstance(src, str) and src.startswith(("nvarguscamerasrc", "rtspsrc")):
             self.isGSTREAMER = True
         if not self.isGSTREAMER:
             self.vid.set(cv2.CAP_PROP_FRAME_WIDTH, width)
