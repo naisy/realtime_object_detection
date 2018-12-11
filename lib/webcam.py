@@ -68,6 +68,30 @@ class WebcamVideoStream:
         if save_to_file:
             self.mkdir(output_movie_dir)
             fps = self.vid.get(cv2.CAP_PROP_FPS)
+
+            # Estimate the fps if not set
+            if(fps == 0):
+                # Number of frames to capture
+                num_frames = 120;
+             
+                # Start time
+                start = time.time()
+                 
+                # Grab a few frames
+                for i in range(0, num_frames) :
+                    ret, frame = self.vid.read()
+             
+                # End time
+                end = time.time()
+             
+                # Time elapsed
+                seconds = end - start
+             
+                # Calculate frames per second
+                fps  = num_frames / seconds;
+
+                print("Estimated frames per second : {0}".format(fps))
+
             fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
             self.out = cv2.VideoWriter(output_file, int(fourcc), fps, (int(self.real_width), int(self.real_height)))
 
