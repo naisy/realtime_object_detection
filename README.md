@@ -58,13 +58,14 @@ See also:<br>
 
 ## Getting Started:
 - login Jetson TX2. Desktop login or ssh remote login. `ssh -C -Y ubuntu@xxx.xxx.xxx.xxx`
+- copy .config.yml to config.yml `cp .config.yml config.yml`
 - edit `config.yml` for your environment. (Ex. camera_input: 0 # for PC)
 - run `python run_stream.py` realtime object detection from webcam
 - or run `python run_video.py` realtime object detection from movie file
 - or run `python run_image.py` realtime object detection from image file
-- wait few minuts.
+- wait a few minutes.
 - Multi-Threading is better performance than Multi-Processing. Multi-Processing bottleneck is interprocess communication.
-<br />
+  <br />
 
 ## Requirements:
 ```
@@ -77,6 +78,7 @@ Also, OpenCV >= 3.1 and Tensorflow >= 1.4 (1.6 is good)
 with run_image.py  
 Please create 'images' directory and put image files.(jpeg,jpg,png)  
 Subdirectories can also be used.  
+
 ```
 image_input: 'images'       # input image dir
 ```
