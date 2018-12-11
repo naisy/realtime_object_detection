@@ -189,6 +189,8 @@ class FPS():
         except Exception as e:
             import traceback
             traceback.print_exc()
+        except KeyboardInterrupt:
+            pass
         finally:
             MPVariable.running.value = False
             if DEBUG_MODE:
@@ -261,6 +263,8 @@ class FPS():
         except Exception as e:
             import traceback
             traceback.print_exc()
+        except KeyboardInterrupt:
+            pass
         finally:
             MPVariable.running.value = False
             print("Time to first image:{}".format(MPVariable.first_complete_time.value))

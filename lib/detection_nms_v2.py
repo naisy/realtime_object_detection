@@ -393,6 +393,8 @@ class NMSV2():
         except:
             import traceback
             traceback.print_exc()
+        except KeyboardInterrupt:
+            pass
         finally:
             """ """ """ """ """ """ """ """ """ """ """
             CLOSE
