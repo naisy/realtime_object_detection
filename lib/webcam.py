@@ -31,6 +31,28 @@ class WebcamVideoStream:
             os.makedirs(path)
         return
 
+    def get_fps_est(self):
+        # Number of frames to capture
+        num_frames = 120;
+
+        # Start time
+        start = time.time()
+         
+        # Grab x num_frames
+        for i in range(0, num_frames) :
+            ret, frame = self.vid.read()
+
+        # End time
+        end = time.time()
+
+        # Time elapsed
+        seconds = end - start
+
+        # Calculate frames per second
+        fps  = num_frames / seconds;
+
+        return fps
+
     def start(self, src, width, height, output_image_dir='output_image', output_movie_dir='output_movie', output_prefix='output', save_to_file=False):
         """
         output_1532580366.27.avi
@@ -45,7 +67,7 @@ class WebcamVideoStream:
         if not self.vid.isOpened():
             # camera failed
             raise IOError(("Couldn't open video file or webcam."))
-        if isinstance(src, str) and src.startswith("nvarguscamerasrc"):
+        if isinstance(src, str) and src.startswith(("nvarguscamerasrc", "rtspsrc")):
             self.isGSTREAMER = True
         if not self.isGSTREAMER:
             self.vid.set(cv2.CAP_PROP_FRAME_WIDTH, width)
@@ -55,7 +77,7 @@ class WebcamVideoStream:
             self.vid.release()
             raise IOError(("Couldn't open video frame."))
         if self.isGSTREAMER:
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_YUV2RGB_I420)
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
         # initialize the variable used to indicate if the thread should
         # check camera vid shape
@@ -68,6 +90,12 @@ class WebcamVideoStream:
         if save_to_file:
             self.mkdir(output_movie_dir)
             fps = self.vid.get(cv2.CAP_PROP_FPS)
+
+            # Estimate the fps if not set
+            if(fps == 0):
+                fps = self.get_fps_est()
+                print("Estimated frames per second : {0}".format(fps))
+
             fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
             self.out = cv2.VideoWriter(output_file, int(fourcc), fps, (int(self.real_width), int(self.real_height)))
 
@@ -88,7 +116,7 @@ class WebcamVideoStream:
                     # otherwise, read the next frame from the stream
                     self.ret, frame = self.vid.read()
                     if self.ret:
-                        self.frame = cv2.cvtColor(frame, cv2.COLOR_YUV2RGB_I420)
+                        self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             else:
                 # keep looping infinitely until the stream is closed
                 while self.running:
