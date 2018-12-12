@@ -16,7 +16,12 @@ class WebcamVideoStream:
         self.out = None
         self.running = False
         self.detection_counter = {}
-        self.isGSTREAMER = False
+        self.CAMERA = 0
+        self.FRAME = 1
+        self.BGR = 0
+        self.I420 = 1
+        self.input_src = self.CAMERA
+        self.input_format = self.BGR
         return
 
     def __del__(self):
@@ -67,17 +72,24 @@ class WebcamVideoStream:
         if not self.vid.isOpened():
             # camera failed
             raise IOError(("Couldn't open video file or webcam."))
-        if isinstance(src, str) and src.startswith(("nvarguscamerasrc", "rtspsrc")):
-            self.isGSTREAMER = True
-        if not self.isGSTREAMER:
+        if isinstance(src, str) and src.startswith("nvarguscamerasrc"):
+            self.input_src = self.FRAME
+            self.input_format = self.I420
+        elif isinstance(src, str) and src.startswith(("rtspsrc", "udp", "nvcamerasrc")):
+            self.input_src = self.FRAME
+            self.input_format = self.BGR
+        else:
+            self.input_src = self.CAMERA
+            self.input_format = self.BGR
+        if self.input_src == self.CAMERA:
             self.vid.set(cv2.CAP_PROP_FRAME_WIDTH, width)
             self.vid.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.ret, self.frame = self.vid.read()
         if not self.ret:
             self.vid.release()
             raise IOError(("Couldn't open video frame."))
-        if self.isGSTREAMER:
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        if self.input_format == self.I420:
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_YUV2RGB_I420)
 
         # initialize the variable used to indicate if the thread should
         # check camera vid shape
@@ -110,13 +122,13 @@ class WebcamVideoStream:
 
     def update(self):
         try:
-            if self.isGSTREAMER:
+            if self.input_format == self.I420:
                 # keep looping infinitely until the stream is closed
                 while self.running:
                     # otherwise, read the next frame from the stream
                     self.ret, frame = self.vid.read()
                     if self.ret:
-                        self.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        self.frame = cv2.cvtColor(frame, cv2.COLOR_YUV2BGR_I420)
             else:
                 # keep looping infinitely until the stream is closed
                 while self.running:
