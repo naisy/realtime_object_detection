@@ -422,6 +422,8 @@ class FasterV2():
             """
             END while
             """
+        except KeyboardInterrupt:
+            pass
         except:
             import traceback
             traceback.print_exc()

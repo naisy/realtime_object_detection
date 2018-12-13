@@ -426,6 +426,8 @@ class MASKV1():
             """
             END while
             """
+        except KeyboardInterrupt:
+            pass
         except:
             import traceback
             traceback.print_exc()

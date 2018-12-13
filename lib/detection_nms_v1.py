@@ -389,6 +389,8 @@ class NMSV1():
             """
             END while
             """
+        except KeyboardInterrupt:
+            pass
         except:
             import traceback
             traceback.print_exc()

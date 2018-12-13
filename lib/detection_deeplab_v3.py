@@ -395,6 +395,8 @@ class DeepLabV3():
             """
             END while
             """
+        except KeyboardInterrupt:
+            pass
         except:
             import traceback
             traceback.print_exc()
