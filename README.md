@@ -4,7 +4,7 @@
 forked from GustavZ/realtime_object_detection: [https://github.com/GustavZ/realtime_object_detection](https://github.com/GustavZ/realtime_object_detection)  
 And focused on model split technique of ssd_mobilenet_v1.  
 
-Download model from here: [detection_model_zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)  
+Download model from here: [tf1_detection_model_zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md)
 ```
 wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2018_01_28.tar.gz
 ```
@@ -90,7 +90,7 @@ movie_input: 'input.mp4'    # mp4 or avi. Movie file.
 #### Camera
 with run_stream.py  
 This is OpenCV argument.
-* USB Webcam on PC
+* USB Webcam on PC/Xavier
 ```
 camera_input: 0
 ```
